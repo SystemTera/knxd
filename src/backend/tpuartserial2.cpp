@@ -89,7 +89,7 @@ TPUART2SerialLayer2Driver::TPUART2SerialLayer2Driver (const char *dev,
   t1.c_lflag = 0;
   t1.c_cc[VTIME] = 1;
   t1.c_cc[VMIN] = 0;
-  cfsetospeed (&t1, B19200);
+  cfsetospeed (&t1, B115200);
   cfsetispeed (&t1, 0);
 
   if (tcsetattr (fd, TCSAFLUSH, &t1))
