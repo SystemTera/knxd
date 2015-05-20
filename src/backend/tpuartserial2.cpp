@@ -20,7 +20,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <sys/ioctl.h>
-#include "tpuartserial.h"
+#include "tpuartserial2.h"
 
 /** get serial status lines */
 static int
