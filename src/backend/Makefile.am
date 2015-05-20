@@ -52,8 +52,14 @@ else
 NCN5120 = 
 endif
 
+if HAVE_TPUARTs2
+TPUARTs2 = tpuartserial2.h tpuartserial2.cpp lowlatency.h lowlatency.cpp
+else
+TPUARTs2 = 
+endif
+
 noinst_LIBRARIES = libbackend.a
 AM_CPPFLAGS=-I$(top_srcdir)/src/libserver -I$(top_srcdir)/src/common -I$(top_srcdir)/src/usb $(PTH_CFLAGS) $(LIBUSB_CFLAGS)
 
-libbackend_a_SOURCES= $(FT12) $(PEI16) $(TPUART) $(PEI16s) $(TPUARTs) $(EIBNETIP) $(EIBNETIPTUNNEL) $(USB) $(NCN5120) dummy.cpp
+libbackend_a_SOURCES= $(FT12) $(PEI16) $(TPUART) $(PEI16s) $(TPUARTs) $(EIBNETIP) $(EIBNETIPTUNNEL) $(USB) $(NCN5120) $(TPUARTs2) dummy.cpp
 
