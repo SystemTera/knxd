@@ -134,7 +134,7 @@ if test x$tpuarts = xtrue ; then
 fi
 
 AC_ARG_ENABLE(tpuarts2,
-[  --enable-tpuarts2     enable TPUART user driver backend],
+[  --enable-tpuarts2     enable TPUART2 user driver backend, with 115200 baud],
 [case "${enableval}" in
  yes) tpuart2s=true ;;
   no)  tpuart2s=false ;;
