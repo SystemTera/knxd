@@ -133,6 +133,18 @@ if test x$tpuarts = xtrue ; then
  AC_DEFINE(HAVE_TPUARTs, 1 , [TPUARTs enabled])
 fi
 
+AC_ARG_ENABLE(tpuarts2,
+[  --enable-tpuarts2     enable TPUART user driver backend],
+[case "${enableval}" in
+ yes) tpuarts2=true ;;
+  no)  tpuarts2=false ;;
+   *) AC_MSG_ERROR(bad value ${enableval} for --enable-tpuarts2) ;;
+ esac],[tpuarts2=true])
+AM_CONDITIONAL(HAVE_TPUARTs2, test x$tpuarts2 = xtrue)
+if test x$tpuarts2 = xtrue ; then
+ AC_DEFINE(HAVE_TPUARTs2, 1 , [TPUARTs2 enabled])
+fi
+
 AC_ARG_ENABLE(eibnetip,
 [  --enable-eibnetip	enable EIBnet/IP routing backend],
 [case "${enableval}" in
