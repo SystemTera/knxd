@@ -17,8 +17,8 @@
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#ifndef TPUART_SERIAL_H
-#define TPUART_SERIAL_H
+#ifndef TPUART_SERIAL2_H
+#define TPUART_SERIAL2_H
 #include <termios.h>
 #include "lowlatency.h"
 #include "layer2.h"
