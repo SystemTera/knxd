@@ -197,6 +197,15 @@ static struct argp_option options[] = {
   {"tpuarts-disch-reset", OPT_BACK_TPUARTS_DISCH_RESET, 0, 0,
    "tpuarts backend should should use a full interface reset (for Disch TPUART interfaces)"},
 #endif
+#ifdef HAVE_TPUART2s
+  {"tpuarts-ack-all-group", OPT_BACK_TPUARTS_ACKGROUP, 0, 0,
+   "tpuarts backend should generate L2 acks for all group telegrams"},
+  {"tpuarts-ack-all-individual", OPT_BACK_TPUARTS_ACKINDIVIDUAL, 0, 0,
+   "tpuarts backend should generate L2 acks for all individual telegrams"},
+  {"tpuarts-disch-reset", OPT_BACK_TPUARTS_DISCH_RESET, 0, 0,
+   "tpuarts backend should should use a full interface reset (for Disch TPUART interfaces)"},
+#endif
+
   {"no-emi-send-queuing", OPT_BACK_EMI_NOQUEUE, 0, 0,
    "wait for L_Data_ind while sending (for all EMI based backends)"},
   {0}

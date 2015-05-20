@@ -47,4 +47,7 @@ L2_NAME (FT12)
 #ifdef HAVE_NCN5120
   L2_NAME(NCN5120)
 #endif
+#ifdef HAVE_TPUART2s
+  L2_NAME(TPUART2s)
+#endif
 
