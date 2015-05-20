@@ -50,5 +50,8 @@
 #ifdef HAVE_NCN5120
 #include "b-NCN5120.h"
 #endif
+#ifdef HAVE_TPUART2s
+#include "b-TPUART2s.h"
+#endif
 
 #endif

@@ -133,12 +133,12 @@ if test x$tpuarts = xtrue ; then
  AC_DEFINE(HAVE_TPUARTs, 1 , [TPUARTs enabled])
 fi
 
-AC_ARG_ENABLE(tpuarts2,
-[  --enable-tpuarts2     enable TPUART2 user driver backend, with 115200 baud],
+AC_ARG_ENABLE(tpuart2s,
+[  --enable-tpuart2s     enable TPUART2 user driver backend, with 115200 baud],
 [case "${enableval}" in
  yes) tpuart2s=true ;;
   no)  tpuart2s=false ;;
-   *) AC_MSG_ERROR(bad value ${enableval} for --enable-tpuarts2) ;;
+   *) AC_MSG_ERROR(bad value ${enableval} for --enable-tpuart2s) ;;
  esac],[tpuart2s=true])
 AM_CONDITIONAL(HAVE_TPUART2s, test x$tpuart2s = xtrue)
 if test x$tpuart2s = xtrue ; then

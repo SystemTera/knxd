@@ -17,23 +17,23 @@
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#ifndef C_TPUARTs2_H
-#define C_TPUARTs2_H
+#ifndef C_TPUART2s_H
+#define C_TPUART2s_H
 
 #include "tpuartserial2.h"
 
-#define TPUARTs2_URL "tpuarts2:/dev/ttySx\n"
+#define TPUART2s_URL "tpuarts2:/dev/ttySx\n"
 
-#define TPUARTs2_DOC "tpuarts2 connects to the EIB bus over an TPUART (using a user mode driver with baud 115200, experimental)\n\n"
+#define TPUART2s_DOC "tpuarts2 connects to the EIB bus over an TPUART (using a user mode driver with baud 115200, experimental)\n\n"
 
-#define TPUARTs2_PREFIX "tpuarts2"
+#define TPUART2s_PREFIX "tpuart2s"
 
-#define TPUARTs2_CREATE tpuarts2_Create
+#define TPUART2s_CREATE tpuart2s_Create
 
-#define TPUARTs2_CLEANUP NULL
+#define TPUART2s_CLEANUP NULL
 
 inline Layer2Interface *
-tpuarts2_Create (const char *dev, int flags, Trace * t)
+tpuart22_Create (const char *dev, int flags, Trace * t)
 {
   return new TPUART2SerialLayer2Driver (dev, arg.addr, flags, t);
 }
