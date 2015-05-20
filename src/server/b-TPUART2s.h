@@ -33,7 +33,7 @@
 #define TPUART2s_CLEANUP NULL
 
 inline Layer2Interface *
-tpuart22_Create (const char *dev, int flags, Trace * t)
+tpuart2s_Create (const char *dev, int flags, Trace * t)
 {
   return new TPUART2SerialLayer2Driver (dev, arg.addr, flags, t);
 }
