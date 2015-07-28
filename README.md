@@ -6,24 +6,37 @@ https://www.auto.tuwien.ac.at/~mkoegler/index.php/bcusdk
 
 For a (german only) history and discussion why knxd emerged please also see: [eibd(war bcusdk) Fork -> knxd](http://knx-user-forum.de/forum/öffentlicher-bereich/knx-eib-forum/39972-eibd-war-bcusdk-fork-knxd)
 
+## New Features
+
+* 0.10
+** Support for more than one KNX interface
+
 ## Building
 
-### Dependencies
+### Getting the source code
 
 On Debian:
 
-    apt-get install build-essential libtool automake pkg-config cdbs
+    apt-get install git-core build-essential
+    git clone https://github.com/knxd/knxd.git
+
+    # If "dpkg-buildpackage" complains about missing packages:
+    # install them (with "apt-get install") and try again.
+
+    # first we need libpthsem which unfortunately isn't part of Debian
     wget https://www.auto.tuwien.ac.at/~mkoegler/pth/pthsem_2.0.8.tar.gz
     tar xzf pthsem_2.0.8.tar.gz
     cd pthsem-2.0.8
-    dpkg-buildpackage
-    sudo dpkg -i ../libpthsem*.deb
+    dpkg-buildpackage -b
+    cd ..
+    sudo dpkg -i libpthsem*.deb
 
-### knxd
-
-    ./bootstrap.sh
-    dpkg-buildpackage
-    sudo dpkg -i ../knxd*.deb
+    # now build knxd
+    cd knxd
+    # If you're using Wheezy, edit debian/control and remove the "libsystemd-daemon-dev" line
+    dpkg-buildpackage -b
+    cd ..
+    sudo dpkg -i knxd_*.deb knxd-tools_*.deb
 
 ## Contributions
 
