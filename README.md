@@ -52,6 +52,7 @@ On Debian:
 
     # now build+install knxd itself
     cd knxd
+    git checkout stable ## this branch
     dpkg-buildpackage -b -uc
     cd ..
     sudo dpkg -i knxd_*.deb knxd-tools_*.deb
@@ -88,7 +89,7 @@ Therefore, you do this:
 * Copy the following line to ``/etc/udev/rules.d/70-knxd.rules``:
 
   ```
-  ACTION=="add", SUBSYSTEM=="tty", ATTRS{idVendor}=="03eb", ATTRS{idProduct}=="204b", KERNELS="something", SYMLINK+="ttyKNX1", OWNER="knxd"
+  ACTION=="add", SUBSYSTEM=="tty", ATTRS{idVendor}=="03eb", ATTRS{idProduct}=="204b", KERNELS=="something", SYMLINK+="ttyKNX1", OWNER="knxd"
   ```
 
   Of course you need to replace the ``something`` with whatever ``udevadm`` displayed.

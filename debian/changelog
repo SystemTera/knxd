@@ -1,116 +1,41 @@
-knxd (0.11.14-1) unstable; urgency=medium
+knxd (0.10.18-1) stable; urgency=medium
 
-  * Merge #171: configurable send delay
-    (for those interfaces which already had a delay)
+  * fix USB shutdown bug
 
- -- Matthias Urlichs <matthias@urlichs.de>  Sun, 11 Dec 2016 23:41:48 +0100
+ -- Matthias Urlichs <matthias@urlichs.de>  Sun, 08 Jan 2017 12:13:50 +0100
 
-knxd (0.11.13-1) unstable; urgency=medium
+knxd (0.10.17-1) stable; urgency=medium
 
-  * Re-do logging
-    - numbered and named channels
-    - milliseconds
+  * fix eibread-cgi. I was stupid.
 
- -- Matthias Urlichs <matthias@urlichs.de>  Sun, 11 Dec 2016 23:41:48 +0100
+ -- Matthias Urlichs <matthias@urlichs.de>  Thu, 05 Jan 2017 18:13:18 +0100
 
-knxd (0.11.12-1) unstable; urgency=medium
+knxd (0.10.16-1) unstable; urgency=medium
 
-  * Change tpuarts baud rate
-  * Merge #174: elupus:disconnect_success
+  * Fixed the hop count=7 problem.
+    Thanks to Thomas Dallmair.
+  * Enhance low-latency code to work on more systems, hopefully.
+  * Added a workaround for the TPUART ACK problem.
 
- -- Matthias Urlichs <matthias@urlichs.de>  Thu, 08 Dec 2016 19:27:15 +0100
+ -- Matthias Urlichs <matthias@urlichs.de>  Tue, 03 Jan 2017 05:30:15 +0100
 
-knxd (0.11.11-1) unstable; urgency=medium
+knxd (0.10.15-1) unstable; urgency=medium
 
-  * Add tpuarts-over-tcp driver (for CUNx, busware.de)
+  * Fix addressing for physically-addressed packets to tunnels
 
- -- Matthias Urlichs <matthias@urlichs.de>  Thu, 08 Dec 2016 17:22:29 +0100
+ -- Matthias Urlichs <matthias@urlichs.de>  Sun, 18 Dec 2016 14:53:56 +0100
 
-knxd (0.11.11-0) unstable; urgency=medium
+knxd (0.10.14-3) unstable; urgency=low
 
-  * Implemented a --send-delay=X option
+  * Fix packaging, Lintian errors
 
- -- Matthias Urlichs <matthias@urlichs.de>  Fri, 02 Dec 2016 00:44:40 +0100
+ -- Matthias Urlichs <matthias@urlichs.de>  Sun, 18 Dec 2016 14:51:14 +0100
 
-knxd (0.11.10-1) unstable; urgency=medium
+knxd (0.10.14-2) unstable; urgency=medium
 
-  * Correct invalid length of L_Busmon.ind field for busmonitor mode
-  * fix server crash when there's no ACK
+  * gentoo packaging update
 
- -- Matthias Urlichs <matthias@urlichs.de>  Sun, 27 Nov 2016 22:07:56 +0100
-
-knxd (0.11.9-1) unstable; urgency=medium
-
-  * removed layer2_is_bus() call
-
- -- Matthias Urlichs <matthias@urlichs.de>  Sat, 19 Mar 2016 15:57:35 +0100
-
-knxd (0.11.8-2) unstable; urgency=low
-
-  * Merged master branch up to 0.10.13-3
-
- -- Matthias Urlichs <matthias@urlichs.de>  Sat, 12 Mar 2016 14:55:20 +0100
-
-knxd (0.11.8-1) unstable; urgency=medium
-
-  * Merged master branch up to 0.10.13-2
-
- -- Matthias Urlichs <matthias@urlichs.de>  Fri, 11 Mar 2016 16:40:16 +0100
-
-knxd (0.11.7-2) unstable; urgency=medium
-
-  * Merged master branch up to 0.10.12-1
-
- -- Matthias Urlichs <matthias@urlichs.de>  Sat, 23 Jan 2016 15:52:06 +0100
-
-knxd (0.11.6-1) unstable; urgency=medium
-
-  * Merged master branch up to 0.10.11-1
-
- -- Matthias Urlichs <matthias@urlichs.de>  Fri, 08 Jan 2016 17:57:49 +0100
-
-knxd (0.11.5-1) unstable; urgency=medium
-
-  * Merged master branch up to 0.10.10-1
-
- -- Matthias Urlichs <matthias@urlichs.de>  Wed, 18 Nov 2015 13:40:53 +0100
-
-knxd (0.11.4-2) unstable; urgency=medium
-
-  * Merged master branch up to 0.10.9-3
-
- -- Matthias Urlichs <matthias@urlichs.de>  Mon, 12 Oct 2015 16:14:16 +0200
-
-knxd (0.11.4-1) unstable; urgency=medium
-
-  * Merged master branch up to 0.10.9-2
-
- -- Matthias Urlichs <matthias@urlichs.de>  Sun, 20 Sep 2015 16:14:50 +0200
-
-knxd (0.11.3-1) unstable; urgency=medium
-
-  * Default Unix socket changed to /run/knx
-
- -- Matthias Urlichs <matthias@urlichs.de>  Thu, 17 Sep 2015 02:22:27 +0200
-
-knxd (0.11.2-4) unstable; urgency=medium
-
-  * Merged
-
- -- Matthias Urlichs <matthias@urlichs.de>  Thu, 17 Sep 2015 02:15:36 +0200
-
-knxd (0.11.2-3) unstable; urgency=medium
-
-  * Merged master branch
-
- -- Matthias Urlichs <matthias@urlichs.de>  Thu, 10 Sep 2015 14:08:39 +0200
-
-knxd (0.11.1-1) unstable; urgency=medium
-
-  * Allocate remote addresses to clients
-  * Refactor multicast to use a separate port for sending
-
- -- Matthias Urlichs <matthias@urlichs.de>  Sun, 28 Jun 2015 06:53:31 +0000
+ -- Matthias Urlichs <matthias@urlichs.de>  Fri, 09 Dec 2016 19:38:19 +0100
 
 knxd (0.10.14-1) unstable; urgency=medium
 
@@ -326,6 +251,6 @@ knxd (0.9.1-1) unstable; urgency=medium
 
 knxd (0.9.0-1) unstable; urgency=low
 
-  * Initial release (Closes: #nnnn)  <nnnn is the bug number of your ITP>
+  * Initial release.
 
  -- Timo <knxd@timo-wingender.de>  Tue, 16 Dec 2014 12:55:54 +0100
