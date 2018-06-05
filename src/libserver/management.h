@@ -40,8 +40,11 @@ typedef struct
 class Management_Connection:public Layer7_Connection
 {
 public:
-  Management_Connection (Trace * tr,
-                         eibaddr_t dest):Layer7_Connection (tr, dest) { }
+  Management_Connection (TracePtr tr,
+                         eibaddr_t dest):Layer7_Connection (tr, dest)
+  {
+    t->setAuxName("Mgr");
+  }
 
   /** turns programming mode on */
   int X_Progmode_On ();
@@ -60,7 +63,7 @@ public:
 class Management_Individual:public Layer7_Individual
 {
 public:
-  Management_Individual (Trace * tr,
+  Management_Individual (TracePtr tr,
                          eibaddr_t dest):Layer7_Individual (tr, dest) { }
 };
 

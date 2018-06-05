@@ -20,36 +20,23 @@
 #ifndef EIB_EMI1_H
 #define EIB_EMI1_H
 
-#include "layer2.h"
-#include "lowlevel.h"
+#include "emi_common.h"
 
 /** EMI1 backend */
-class EMI1Layer2:public Layer2, private Thread
+class EMI1Driver:public EMI_Common
 {
-  /** driver to send/receive */
-  LowLevelDriver *iface;
-  /** semaphore for inqueue */
-  pth_sem_t in_signal;
-  /** input queue */
-  Queue < LPDU * >inqueue;
-  pth_time_t send_delay;
-
-  void Send (LPDU * l);
-  void Run (pth_sem_t * stop);
-  const char *Name() { return "emi1"; }
+  void cmdEnterMonitor();
+  void cmdLeaveMonitor();
+  void cmdOpen();
+  void cmdClose();
+  const uint8_t * getIndTypes();
+  EMIVer getVersion() { return vEMI1; }
+  void sendLocal_done_cb(bool success);
+  enum { N_bad, N_up, N_want_close, N_down, N_open } sendLocal_done_next = N_bad;
+  void do_send_Next();
 public:
-  EMI1Layer2 (LowLevelDriver * i, L2options *opt);
-  ~EMI1Layer2 ();
-  bool init (Layer3 *l3);
-
-  void Send_L_Data (LPDU * l);
-
-  bool enterBusmonitor ();
-  bool leaveBusmonitor ();
-
-  bool Open ();
-  bool Close ();
-  bool Send_Queue_Empty ();
+  EMI1Driver (LowLevelIface* c, IniSectionPtr& s, LowLevelDriver *i = nullptr);
+  virtual ~EMI1Driver ();
 };
 
 #endif

@@ -1,2 +1,0 @@
-LPDU: BC 32 01 0A 03 D1 00 84 2C :L_Data low from 3.2.1 to 1/2/3 hops: 05 T_DATA_XXX_REQ A_GroupValue_Write (small) 04 
-LPDU: BC 32 01 0A 03 D4 00 80 04 05 06 2A :L_Data low from 3.2.1 to 1/2/3 hops: 05 T_DATA_XXX_REQ A_GroupValue_Write 04 05 06 

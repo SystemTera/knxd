@@ -22,6 +22,7 @@
 
 #include "types.h"
 #include <assert.h>
+#include <ev++.h>
 
 /** Domain address */
 typedef uint16_t domainaddr_t;
@@ -54,7 +55,6 @@ typedef enum
 
 #include "queue.h"
 #include "exception.h"
-#include "threads.h"
 
 /** add c to s as hex value
  * @param s string
@@ -87,13 +87,13 @@ inline T ignore_result(T x __attribute__((unused)))
     return x;
 }
 
-extern pth_time_t pth_null_time;
-
-#define CONST const
-#ifdef __GNUC__
-#define UNUSED __attribute__((unused))
+/** libev */
+#if EV_MULTIPLICITY
+  typedef struct ev_loop *LOOP_RESULT;
 #else
-#define UNUSED 
+  typedef int LOOP_RESULT;
 #endif
+extern LOOP_RESULT loop;
+
 
 #endif

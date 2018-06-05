@@ -20,47 +20,55 @@
 #ifndef EIBNET_SERVER_H
 #define EIBNET_SERVER_H
 
+#include <ev++.h>
+#include "callbacks.h"
 #include "eibnetip.h"
-#include "layer3.h"
-#include "layer2.h"
+#include "link.h"
 #include "server.h"
+#include "lpdu.h"
+
 
 class EIBnetServer;
+typedef std::shared_ptr<EIBnetServer> EIBnetServerPtr;
 
 typedef enum {
-	CT_STANDARD = 0,
+	CT_NONE = 0,
+	CT_STANDARD,
 	CT_BUSMONITOR,
 	CT_CONFIG,
 } ConnType;
 
-class ConnState: protected Thread, public Layer2mixin
-{
-  virtual void RunDone() { Layer2mixin::RunStop(); }
 
+/** Driver for tunnels */
+class ConnState: public SubDriver, public L_Busmonitor_CallBack
+{
 public:
-  ConnState (EIBnetServer *p, eibaddr_t addr);
-  ~ConnState ();
-  void Start () { Thread::Start(); }
-  void Run (pth_sem_t * stop1);
+  ConnState (LinkConnectClientPtr c, eibaddr_t addr);
+  virtual ~ConnState ();
+  bool setup();
+  // void start();
+  void stop();
 
   EIBnetServer *parent;
-  bool init();
 
+  eibaddr_t addr;
   uchar channel;
   uchar sno;
   uchar rno;
-  int state;
-  ConnType type;
+  int retries;
+  ConnType type = CT_NONE;
   int no;
   bool nat;
-  pth_event_t timeout;
+
+  ev::timer timeout; void timeout_cb(ev::timer &w, int revents);
+  ev::timer sendtimeout; void sendtimeout_cb(ev::timer &w, int revents);
+  ev::async send_trigger; void send_trigger_cb(ev::async &w, int revents);
+  bool do_send_next = false;
   Queue < CArray > out;
+  void reset_timer();
 
   struct sockaddr_in daddr;
   struct sockaddr_in caddr;
-  pth_sem_t *outsignal;
-  pth_event_t outwait;
-  pth_event_t sendtimeout;
 
   // handle various packets from the connection
   void tunnel_request(EIBnet_TunnelRequest &r1, EIBNetIPSocket *isock);
@@ -68,77 +76,83 @@ public:
   void config_request(EIBnet_ConfigRequest &r1, EIBNetIPSocket *isock);
   void config_response (EIBnet_ConfigACK &r1);
 
-  void shutdown(void);
-  void Send_L_Data (L_Data_PDU * l);
-  const char * Name () { return "EIBnetConn"; } // TODO add a sequence number
+  void send_L_Data (LDataPtr l);
+  void send_L_Busmonitor (LBusmonPtr l);
 };
 typedef std::shared_ptr<ConnState> ConnStatePtr;
 
-typedef struct
-{
-  eibaddr_t src;
-  eibaddr_t dest;
-  pth_event_t timeout;
-} NATState;
 
-class EIBnetDiscover: protected Thread
+/** Driver for routing */
+class EIBnetDriver : public SubDriver
 {
-  EIBnetServer *parent;
   EIBNetIPSocket *sock; // receive only
 
-  void Run (pth_sem_t * stop);
+  void recv_cb(EIBNetIPPacket *p);
+  EIBPacketCallback on_recv;
+  void error_cb();
 
 public:
-  EIBnetDiscover (EIBnetServer *parent, const char *multicastaddr, int port);
-  virtual ~EIBnetDiscover ();
+  EIBnetDriver (LinkConnectClientPtr c, std::string& multicastaddr, int port, std::string& intf);
+  virtual ~EIBnetDriver ();
   struct sockaddr_in maddr;
 
-  bool init (void);
-  const char * Name () { return "EIBnetD"; }
+  bool setup();
+  // void start();
+  // void stop();
 
   void Send (EIBNetIPPacket p, struct sockaddr_in addr);
+
+  void send_L_Data (LDataPtr l);
 };
 
-class EIBnetServer: protected Thread, public L_Busmonitor_CallBack, public Layer2mixin
+typedef std::shared_ptr<EIBnetDriver> EIBnetDriverPtr;
+
+SERVER(EIBnetServer,ets_router)
 {
   friend class ConnState;
-  friend class EIBnetDiscover;
+  friend class EIBnetDriver;
 
-  EIBnetDiscover *mcast; // used for multicast receiving
+  EIBnetDriverPtr mcast;   // used for multicast receiving
   EIBNetIPSocket *sock;  // used for normal dialog
+
   int sock_mac;          // used to query the list of interfaces
   int Port;              // copy of sock->port()
 
-  /** Flags */
+  /** config */
   bool tunnel;
   bool route;
   bool discover;
+  bool single_port;
+  std::string multicastaddr;
+  uint16_t port;
+  std::string interface;
+  std::string servername;
+  IniSectionPtr router_cfg;
+  IniSectionPtr tunnel_cfg;
 
-  int busmoncount;
-  Array < ConnStatePtr > state;
-  Array < NATState > natstate;
-  String name;
+  Array < ConnStatePtr > connections;
+  Queue < ConnStatePtr > drop_q;
 
-  void Run (pth_sem_t * stop);
-  void Send_L_Data (L_Data_PDU * l);
-  void Send_L_Busmonitor (L_Busmonitor_PDU * l);
-  void addBusmonitor ();
-  void delBusmonitor ();
   int addClient (ConnType type, const EIBnet_ConnectRequest & r1,
                  eibaddr_t addr = 0);
-  void addNAT (const L_Data_PDU & l);
+  void addNAT (const LDataPtr &&l);
+
+  void recv_cb(EIBNetIPPacket *p);
+  void error_cb();
+
+  void stop_();
 public:
-  EIBnetServer (Trace * tr, const String serverName);
+  EIBnetServer (BaseRouter& r, IniSectionPtr& s);
   virtual ~EIBnetServer ();
-  bool init (Layer3 *l3); // __attribute__((deprecated));
-  bool init (Layer3 *l3,
-             const char *multicastaddr, const int port,
-             const bool tunnel, const bool route, const bool discover);
+  bool setup ();
+  void start();
+  void stop();
+
   void handle_packet (EIBNetIPPacket *p1, EIBNetIPSocket *isock);
 
-  const char * Name () { return "EIBnet"; }
-  void drop_state (ConnStatePtr s);
-  void drop_state (uint8_t index);
+  void drop_connection (ConnStatePtr s);
+  ev::async drop_trigger; void drop_trigger_cb(ev::async &w, int revents);
+
   inline void Send (EIBNetIPPacket p) {
     Send (p, mcast->maddr);
   }
@@ -147,6 +161,8 @@ public:
       sock->Send (p, addr);
   }
 
+  bool checkAddress(eibaddr_t addr UNUSED) { return route; }
+  bool checkGroupAddress(eibaddr_t addr UNUSED) { return route; }
 };
 typedef std::shared_ptr<EIBnetServer> EIBnetServerPtr;
 
